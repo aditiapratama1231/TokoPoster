@@ -29,7 +29,7 @@
             posters: [],
         },
         mounted(){
-            this.getData('api/posters');
+            this.getData('api/v1/posters');
         },
         methods: {
             getData(url) {
