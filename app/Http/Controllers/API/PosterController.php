@@ -52,10 +52,10 @@ class PosterController extends Controller{
         );
         $poster = Poster::create($data);
         //upload image process
-        $filename = $request->poster_image->store('posters');
+        $filename = $request->poster_image->store('public/posters');
         $poster_image = PosterImage::create([
             'poster_id' => $poster->id,
-            'filename' => $filename
+            'filename' => 'storage/'.$filename
         ]);
         $data['poster_image'] = $poster_image->filename;   
         if(!$poster && !$poster_image){

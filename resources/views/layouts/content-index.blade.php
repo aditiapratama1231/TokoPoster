@@ -11,7 +11,7 @@
                 <p class="center">@{{ poster.poster_name }}</p>
             </div>
             <div class="card-body">
-               <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+               <a href="#"><img class="card-img-top" :src="poster.poster_image.filename" alt=""></a>
                <p></p>
             </div>
           </div>

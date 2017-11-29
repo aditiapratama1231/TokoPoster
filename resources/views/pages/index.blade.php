@@ -34,7 +34,7 @@
         methods: {
             getData(url) {
                 axios.get(url).then((response) => {
-                    this.posters = response.data.data
+                    this.posters = response.data.data.data
                 })
             }
         }

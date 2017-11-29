@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 // });
 
 Route::group(['prefix' => 'v1'], function(){
+    //AUTH ROUTE
     Route::post('login','API\UserController@login');
     Route::post('register', 'API\UserController@register');
     
@@ -34,5 +35,3 @@ Route::group(['prefix' => 'v1'], function(){
     Route::get('category/{id}', 'API\CategoryController@show');
     Route::delete('category/{id}', 'API\CategoryController@delete');
 });
-
-//AUTH ROUTE
