@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ResponseController;
 use App\Poster;
 use App\User;
 use App\Category;
+use App\PosterImage;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -45,14 +46,21 @@ class PosterController extends Controller{
         $data = array(
             'user_id' => Auth::user()->id,
             'poster_name' => $request->poster_name,
-            'poster_image' => $request->poster_image,
             'category_id' => $request->category_id,
             'description' => $request->description,
             'price' => $request->price
         );
         $poster = Poster::create($data);
+        //upload image process
+        $filename = $request->poster_image->store('posters');
+        $poster_image = PosterImage::create([
+            'poster_id' => $poster->id,
+            'filename' => $filename
+        ]);
         if(!$poster){
             return $this->response->send_error_api($data, 'Poster failed to create');
+        }else if(!$poster_image){
+            return $this->response->send_error_api($data, 'Failed to upload poster image');
         }
         return $this->response->send_success_api($data, 'Poster Created');
     }
