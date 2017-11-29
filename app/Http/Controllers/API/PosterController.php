@@ -20,12 +20,12 @@ class PosterController extends Controller{
     }
 
     public function index(){
-        $data = Poster::with('category')->get();
+        $data = Poster::with('category', 'poster_image')->paginate(6);
         return $this->response->send_success_api($data, 'Data retrieved successfully');
     }
 
     public function show($id){
-        $data = Poster::with('category')->find($id);
+        $data = Poster::with('category', 'poster_image')->find($id);
         if(!$data){
             return $this->response->send_error_api($data, 'Poster not found');
         }
@@ -57,10 +57,9 @@ class PosterController extends Controller{
             'poster_id' => $poster->id,
             'filename' => $filename
         ]);
-        if(!$poster){
+        $data['poster_image'] = $poster_image->filename;   
+        if(!$poster && !$poster_image){
             return $this->response->send_error_api($data, 'Poster failed to create');
-        }else if(!$poster_image){
-            return $this->response->send_error_api($data, 'Failed to upload poster image');
         }
         return $this->response->send_success_api($data, 'Poster Created');
     }
