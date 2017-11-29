@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\ResponseController;
 use App\Poster;
 use App\User;
+use App\Category;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -18,14 +19,25 @@ class PosterController extends Controller{
     }
 
     public function index(){
-        $data = Poster::all();
+        $data = Poster::with('category')->get();
         return $this->response->send_success_api($data, 'Data retrieved successfully');
+    }
+
+    public function show($id){
+        $data = Poster::with('category')->find($id);
+        if(!$data){
+            return $this->response->send_error_api($data, 'Poster not found');
+        }
+        return $this->response->send_success_api($data, 'Poster retrieved successfully');
     }
 
     public function create(Request $request){
         $validator = Validator::make($request->all(),[
             'poster_name' => 'required',
             'poster_image' => 'required',
+            'description' => 'required',
+            'category_id' => 'required',
+            'price' => 'required'
         ]);
         if($validator->fails()){
             return $this->response->send_error_api($validator->errors(), 'Data required');
@@ -34,21 +46,15 @@ class PosterController extends Controller{
             'user_id' => Auth::user()->id,
             'poster_name' => $request->poster_name,
             'poster_image' => $request->poster_image,
-            'category_id' => $request->category_id
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'price' => $request->price
         );
         $poster = Poster::create($data);
         if(!$poster){
             return $this->response->send_error_api($data, 'Poster failed to create');
         }
         return $this->response->send_success_api($data, 'Poster Created');
-    }
-
-    public function show($id){
-        $data = Poster::find($id);
-        if(!$data){
-            return $this->response->send_error_api($data, 'Poster not found');
-        }
-        return $this->response->send_success_api($data, 'Poster retrieved successfully');
     }
 
     public function delete($id){

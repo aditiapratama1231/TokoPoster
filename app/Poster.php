@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Poster extends Model
 {
     protected $fillable = [
-        'poster_name', 'poster_image', 'user_id', 'category_id'
+        'poster_name', 'poster_image', 'user_id', 'category_id', 'description', 'price'
+    ];
+
+    protected $hidden = [
+        'category_id'
     ];
 
     public function user(){
@@ -15,6 +19,6 @@ class Poster extends Model
     }
 
     public function category(){
-        return $this->hasOne('App\Category');
+        return $this->belongsTo('App\Category');
     }
 }

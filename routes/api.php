@@ -22,10 +22,11 @@ Route::post('login','API\UserController@login');
 Route::post('register', 'API\UserController@register');
 
 //POSTER ROUTE
-Route::middleware('auth:api')->get('posters', 'API\PosterController@index');
+Route::get('posters', 'API\PosterController@index');
+// Route::middleware('auth:api')->get('posters', 'API\PosterController@index');
 Route::middleware('auth:api')->post('posters', 'API\PosterController@create');
-Route::middleware('auth:api')->get('poster/{id}', 'API\PosterController@show');
-Route::middleware('auth:api')->delete('poster/{id}', 'API\PosterController@delete');
+Route::get('poster/{id}', 'API\PosterController@show');
+Route::delete('poster/{id}', 'API\PosterController@delete');
 
 //CATEGORY ROUTE
 Route::get('categories', 'API\CategoryController@index');
